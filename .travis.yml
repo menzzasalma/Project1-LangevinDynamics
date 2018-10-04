@@ -7,11 +7,25 @@ python:
   - 3.4
   - 2.7
 
+before_install:
+ - pip install coverage
+ - pip install numpy
+ - pip install matplotlib
+ - pip install scipy
+ - pip install argparse
+ - sudo apt-get install -qq python-numpy python-scipy python-matplotlib
+
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis
+install: 
+#pip install -U tox-travis
+- pip install coveralls
+- python setup.py install
 
 # Command to run tests, e.g. python setup.py test
-script: tox
+script:
+- coverage run --source=menzzasalma_langevin setup.py test
+- coverage report -m  
+
 
 # Assuming you have installed the travis-ci CLI tool, after you
 # create the Github repo and add it to Travis, run the
