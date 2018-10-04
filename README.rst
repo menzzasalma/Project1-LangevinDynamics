@@ -25,8 +25,10 @@ CHE 477 - Project 1 - Langevin Dynamics model
 
 Features
 --------
+This is a function that attempts to model the motion of a particle undergoing Brownian motion. Given a set of initial conditions and positional boundaries, it will calculate the drag and random forces on a particle, then log and visualize this data
 
-* TODO
+
+
 
 Credits
 -------
