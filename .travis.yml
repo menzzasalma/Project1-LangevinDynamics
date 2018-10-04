@@ -23,7 +23,7 @@ install:
 
 # Command to run tests, e.g. python setup.py test
 script:
-- coverage run --source=menzzasalma_langevin setup.py test
+- coverage run --source=Project1 setup.py test
 - coverage report -m  
 
 
