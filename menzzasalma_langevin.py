@@ -53,7 +53,6 @@ def randomForce(temperature,gamma=1,kB=1):
     random=np.random.normal(loc=0,scale=standardDeviation) #returns the random force on the particle using a normal ditribution
     return random
 
-
 def integrator(timeStep, velocity, position, temperature, gamma=1, kB=1, mass=1):
     '''Uses the Euler method to numerically integrate the force acting on the particle.
     Returns the particle's velocity after a given time step and the 
@@ -120,7 +119,15 @@ def trajectory(timeStep, timeTotal, initialVelocity, initialPosition, temperatur
     plt.ylabel('Position')
     pylab.savefig("trajectory.png")
         
+#histogramGenerator(timeStep,timeTotal,initialVelocity,initialPosition,temperature,gamma)
+#trajectory(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma)
 
-
-histogramGenerator(timeStep,timeTotal,initialVelocity,initialPosition,temperature,gamma)
-trajectory(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma)
+def fileWrite(data):
+    file=open("Langevin Trial Data.txt", "w")
+    file.write("Velocity     |       Position      |      Time \n")
+    for i in range(len(data[0])-1):
+        file.write(str(data[0][i]) +"     |      "+ str(data[1][i])+"      |      "+ str(data[2][i])+"\n")
+    print("The final position is ", test[4]," and the final velocity is ",test[3])
+    
+test = particleMotion(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma)
+fileWrite(test)
