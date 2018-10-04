@@ -1,5 +1,6 @@
 import numpy as np #importing needed python packages
 import matplotlib.pyplot as plt
+import pylab
 import argparse
 
 #import command line arguments into program. All must be floats
@@ -19,6 +20,7 @@ timeStep=args.time_step
 initialPosition=args.initial_position
 initialVelocity=args.initial_velocity
 gamma=args.damping_coefficient
+
 #defining functions for the separate forces acting on the particle and integrator for those forces
 def dragForce(velocity, gamma=1):
     '''Returns the drag force on a particle undergoing Brownian motion.
@@ -87,7 +89,38 @@ def particleMotion(timeStep, timeTotal, initialVelocity, initialPosition, temper
         index=index+1
         time.append(timeStep*index)    
         if trialPositions[i] < 0 or trialPositions[i] > 5 or index == maxTrials:
-            return trialVelocities, trialPositions, time
+            return trialVelocities, trialPositions, time, trialVelocities[-1], trialPositions[-1]
             break
 
+def histogramGenerator(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma=1, mass=1, wallSize=5, numRuns=100):
+    ''' '''
+    timeToCollision=[]
+    for i in range(int(numRuns)):
+        trial=particleMotion(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma)
+        timeToCollision.append(trial[2][-1])
+    maxIndex=np.argmax(timeToCollision)
+    maxValue=int(timeToCollision[maxIndex])
+    bins=np.arange(maxValue)
+    plt.figure(num=1)
+    plt.hist(timeToCollision,bins, rwidth=0.9)
+    plt.title("Time needed to collide with wall")
+    plt.xlabel('Time until wall collision')
+    plt.ylabel('Number of runs')
+    plt.xticks(bins)
+    pylab.savefig("histogram.png")
 
+def trajectory(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma=1, mass=1, wallSize=5):
+    trial=particleMotion(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma)
+    while trial[4] < 5:
+        trial=particleMotion(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma)
+    plt.figure(num=2)
+    plt.plot(trial[2],trial[1])
+    plt.title('Position of the particle over time')
+    plt.xlabel('Time')
+    plt.ylabel('Position')
+    pylab.savefig("trajectory.png")
+        
+
+
+histogramGenerator(timeStep,timeTotal,initialVelocity,initialPosition,temperature,gamma)
+trajectory(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma)
