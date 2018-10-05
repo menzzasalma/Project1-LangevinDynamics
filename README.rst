@@ -43,22 +43,22 @@ How to Install
 --------
 To install this program, perform a git clone on this repository. 
 
-```
+``
 git clone git@github.com:menzzasalma/Project1-LangevinDynamics
-```
+``
 
 How to Use
 --------
 To use the program, navigate to the folder titled "Project1-LangevinDynamics" Using your command line. It should contain the program file, menzzasalma_langevin.py.
 
 Then, run 
-```
+``
 python menzzasalma_langevin.py
-```
+``
 This can be followed by using any of the accepted inputs, which can be seen in the "Features" section. This will update these values in the program. Any or all of them can be used at once, just initialize them with two hyphens. For example:
-```
+``
 python menzzasalma_langevin.py --temperature 500 --total_time 1000 --initial_velocity 2
-```
+``
 
 These inputs must be numbers (floats or integers); strings will return an error. 
 
