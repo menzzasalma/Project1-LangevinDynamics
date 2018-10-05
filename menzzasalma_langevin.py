@@ -2,15 +2,16 @@ import numpy as np #importing needed python packages
 import matplotlib.pyplot as plt
 import pylab
 import argparse
+import math
 
 #import command line arguments into program. All must be floats
-parser=argparse.ArgumentParser(description="does a thing")
-parser.add_argument('--temperature', metavar='temperature', type=float,  nargs='?')
-parser.add_argument('--total_time', metavar='total_time', type=float, nargs='?')
-parser.add_argument('--time_step', metavar='time_step', type=float, nargs='?')
-parser.add_argument('--initial_position', metavar='initial_position', type=float, nargs='?')
-parser.add_argument('--initial_velocity', metavar='initial_velocity', type=float, nargs='?')
-parser.add_argument('--damping_coefficient', metavar='damping_coefficient', type=float, nargs='?')
+parser=argparse.ArgumentParser(description="Models 1D motion of a particle.")
+parser.add_argument('--temperature', metavar='temperature', type=float, default=300, nargs='?')
+parser.add_argument('--total_time', metavar='total_time', type=float, default=1000, nargs='?')
+parser.add_argument('--time_step', metavar='time_step', type=float, default=0.1, nargs='?')
+parser.add_argument('--initial_position', metavar='initial_position',type=float, default=0, nargs='?')
+parser.add_argument('--initial_velocity', metavar='initial_velocity', type=float, default=0, nargs='?')
+parser.add_argument('--damping_coefficient', metavar='damping_coefficient', type=float, default=0.1, nargs='?')
 args = parser.parse_args()
 
 #take imported values out of parser and convert them into usable variables
