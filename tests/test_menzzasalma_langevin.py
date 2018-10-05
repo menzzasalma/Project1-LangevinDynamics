@@ -7,7 +7,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from menzzasalma_langevin import menzzasalma_langevin
+from Project1/Project1 import menzzasalma_langevin
 from menzzasalma_langevin import cli
 
 

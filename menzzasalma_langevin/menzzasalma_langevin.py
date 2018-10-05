@@ -2,15 +2,16 @@ import numpy as np #importing needed python packages
 import matplotlib.pyplot as plt
 import pylab
 import argparse
+import math
 
 #import command line arguments into program. All must be floats
-parser=argparse.ArgumentParser(description="does a thing")
-parser.add_argument('--temperature', metavar='temperature', type=float,  nargs='?')
-parser.add_argument('--total_time', metavar='total_time', type=float, nargs='?')
-parser.add_argument('--time_step', metavar='time_step', type=float, nargs='?')
-parser.add_argument('--initial_position', metavar='initial_position', type=float, nargs='?')
-parser.add_argument('--initial_velocity', metavar='initial_velocity', type=float, nargs='?')
-parser.add_argument('--damping_coefficient', metavar='damping_coefficient', type=float, nargs='?')
+parser=argparse.ArgumentParser(description="Models 1D motion of a particle.")
+parser.add_argument('--temperature', metavar='temperature', type=float, default=300,  nargs='?')
+parser.add_argument('--total_time', metavar='total_time', type=float, default=1000, nargs='?')
+parser.add_argument('--time_step', metavar='time_step', type=float, default=0.1, nargs='?')
+parser.add_argument('--initial_position', metavar='initial_position', type=float, default=0, nargs='?')
+parser.add_argument('--initial_velocity', metavar='initial_velocity', type=float, default=0, nargs='?')
+parser.add_argument('--damping_coefficient', metavar='damping_coefficient', type=float, default=0.1, nargs='?')
 args = parser.parse_args()
 
 #take imported values out of parser and convert them into usable variables
@@ -74,7 +75,7 @@ def integrator(timeStep, velocity, position, temperature, gamma=1, kB=1):
     newPosition = position + velocity*timeStep
     return newVelocity, newPosition
 
-def particleMotion(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma=1, wallSize=5):
+def particleMotion(timeStep=0.1, timeTotal=1000, initialVelocity=0, initialPosition=0, temperature=300, gamma=1, wallSize=5):
     ''' A function that uses the Euler integrator function defined above to generate the path of a particle undergoing Brownian motion. 
 
     args:
@@ -91,17 +92,17 @@ def particleMotion(timeStep, timeTotal, initialVelocity, initialPosition, temper
     trialPositions=[initialPosition]
     maxTrials=int(timeTotal/timeStep) #compare this to increasing counter to make sure function does not exceed total time alloted. 
     time=[0] #will give list of time elapsed before each velocity/position update
-    for i in range((maxTrials)): 
+    for i in range(maxTrials): 
         results = integrator(timeStep,trialVelocities[i],trialPositions[i],temperature,gamma) #give integrator its args for a given time...
         trialVelocities.append(results[0]) #results of integrator are then added to the end of the velocity/position lists and get used in the next loop of the integrator 
         trialPositions.append(results[1])
         counter=counter+1 
         time.append(timeStep*counter)    
-        if trialPositions[i] < 0 or trialPositions[i] > 5 or counter == maxTrials: #the current position of the particle is compared to the wall boundaries. If it's outside the walls or the trial has taken the maximum amount of time, the loop ends 
+        if trialPositions[i] < 0 or trialPositions[i] > 5 or time[i] >= timeTotal: #the current position of the particle is compared to the wall boundaries. If it's outside the walls or the trial has taken the maximum amount of time, the loop ends 
             return trialVelocities, trialPositions, time, trialVelocities[-1], trialPositions[-1]
             break
 
-def histogramGenerator(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma=1, wallSize=5, numRuns=100):
+def histogramGenerator(timeStep=0.1, timeTotal=1000, initialVelocity=0, initialPosition=0, temperature=300, gamma=1, wallSize=5, numRuns=100):
     '''This funtion uses the particleMotion function to collect information on the amount of time a large sample of runs takes, and plots that data on a histogram.
     
     args:
@@ -126,7 +127,7 @@ def histogramGenerator(timeStep, timeTotal, initialVelocity, initialPosition, te
     plt.xticks(bins)
     pylab.savefig("histogram.png") #saves the histogram to a picture file
 
-def trajectory(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma=1, wallSize=5):
+def trajectory(timeStep=0.1, timeTotal=1000, initialVelocity=0, initialPosition=0, temperature=300, gamma=1, wallSize=5):
     '''Uses the particleMotion function to show a visual representation of a particle's motion during a run. Will plot the 
     position of the particle as a function of time and save it to a file.
     
@@ -161,7 +162,7 @@ def fileWrite(data):
     file.write("Velocity     |       Position      |      Time \n") #puts a header on each rough "column" in the file
     for i in range(len(data[0])-1):
         file.write(str(data[0][i]) +"     |      "+ str(data[1][i])+"      |      "+ str(data[2][i])+"\n") #adds the values at each index in three of the output tuples from the particleMotion function.
-    print("The final position is ", test[4]," and the final velocity is ",test[3]) #prints the final velocity and position of the particle to the command line
+    print("The final position is ", data[4]," and the final velocity is ",data[3]) #prints the final velocity and position of the particle to the command line
     
 Trial = particleMotion(timeStep, timeTotal, initialVelocity, initialPosition, temperature, gamma)
 fileWrite(Trial)
