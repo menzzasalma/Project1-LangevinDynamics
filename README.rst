@@ -20,13 +20,47 @@ CHE 477 - Project 1 - Langevin Dynamics model
 
 
 * Free software: MIT license
-* Documentation: https://menzzasalma-langevin.readthedocs.io.
 
+Description
+--------
+This is a function that attempts to model the motion of a particle undergoing one-dimensional Brownian motion. Given a set of initial conditions and positional boundaries, it will calculate the drag and random forces on a particle, then log and visualize this data. 
 
 Features
 --------
-This is a function that attempts to model the motion of a particle undergoing Brownian motion. Given a set of initial conditions and positional boundaries, it will calculate the drag and random forces on a particle, then log and visualize this data
+- Accepts all the following inputs from the command line:
+        - temperature
+        - total_time
+        - time_step
+        - initial_position
+        - initial_velocity
+        - damping_coefficient
+- Returns the final position and velocity of the particle to the command line
+- Returns a text file with the instantaneous velocity and instantaneous position of a particle at every specified time step.
+- Returns a histogram with the number of trials that ended in a particle hitting the wall in each one second time interval
+- Returns a .png file with the trajectory of a particle that collides with the opposite wall
 
+How to Install
+--------
+To install this program, perform a git clone on this repository. 
+
+```
+git clone git@github.com:menzzasalma/Project1-LangevinDynamics
+```
+
+How to Use
+--------
+To use the program, navigate to the folder titled "Project1-LangevinDynamics" Using your command line. It should contain the program file, menzzasalma_langevin.py.
+
+Then, run 
+```
+python menzzasalma_langevin.py
+```
+This can be followed by using any of the accepted inputs, which can be seen in the "Features" section. This will update these values in the program. Any or all of them can be used at once, just initialize them with two hyphens. For example:
+```
+python menzzasalma_langevin.py --temperature 500 --total_time 1000 --initial_velocity 2
+```
+
+These inputs must be numbers (floats or integers); strings will return an error. 
 
 
 
